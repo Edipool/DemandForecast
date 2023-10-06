@@ -8,7 +8,7 @@ output_sku_demand_day: "data/processed/sku_demand_day.csv"
 output_features_and_targets: "data/processed/features_targets.csv"
 output_losses: "models/losses.json"
 output_model: "models/model.pkl"
-output_predictions: data/processed/predictions.csv
+output_predictions: "data/processed/predictions.csv"
 # Parameters
 feature_params:
   sku_demand_day:

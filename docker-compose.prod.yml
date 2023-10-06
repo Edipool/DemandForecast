@@ -8,6 +8,7 @@ services:
     volumes:
       - ./src/:/usr/src/app/
       - ./logs/:/usr/logs/
+      - ./data/:/usr/data/
     ports:
       - "8001:8000"
 
@@ -53,12 +54,19 @@ volumes:
       o: bind
       type: none
       device: ./grafana_data
-      
+
   logs_data:
     driver: local
     driver_opts:
       o: bind
       type: none
       device: ./logs
+
+  data_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./data
 
   postgres_data:
