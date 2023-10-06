@@ -96,11 +96,11 @@ target/
 
 # Model folder
 /models/
-# data
-data/*
-!data/processed/
-data/processed/*
-!data/processed/predictions.csv
+/data/
+# data/*
+# !data/processed/
+# data/processed/*
+# !data/processed/predictions.csv
 
 
 
