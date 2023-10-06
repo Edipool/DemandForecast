@@ -1,0 +1,27 @@
+name: Deploy to Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker ps -q | xargs -r docker stop
+          docker ps -a -q | xargs -r docker rm
+          docker images -q | xargs -r docker rmi
+          rm -rf DemandForecast
+          git clone https://github.com/Edipool/DemandForecast
+          cd DemandForecast
+          sudo chmod -R 777 ./grafana_data
+          docker-compose down
+          docker-compose build
+          docker-compose -f docker-compose.prod.yml up -d

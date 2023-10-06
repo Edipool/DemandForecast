@@ -1,0 +1,4 @@
+['remote "s3"']
+    url = s3://regsys
+    endpointurl = https://storage.yandexcloud.net
+    region = ru-msk

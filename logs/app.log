@@ -1,0 +1,27 @@
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:src.entities.train_pipeline_params:Schema loaded successfully
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+ERROR:root:Failed to load predictions from /DemandForecast/data/processed/predictions.csv. Error: [Errno 2] No such file or directory: '/DemandForecast/data/processed/predictions.csv'
+ERROR:root:Failed to load predictions from /DemandForecast/data/processed/predictions.csv. Error: [Errno 2] No such file or directory: '/DemandForecast/data/processed/predictions.csv'
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:src.entities.train_pipeline_params:Schema loaded successfully
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:src.entities.train_pipeline_params:Schema loaded successfully
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:root:Request from how_much_to_order is successful
+INFO:root:Request from stock_level_forecast is successful
+INFO:root:Request from low_stock_sku_list is successful
+ERROR:root:Validation error: [{'loc': ('body', 'sku', 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]
+ERROR:root:Validation error: [{'loc': ('body', 'sku', 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]
+ERROR:root:Validation error: [{'loc': ('body', 'sku_stock', 0, 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]
+ERROR:root:Failed to load predictions from /DemandForecast/data/processed/predictions.csv. Error: [Errno 2] No such file or directory: '/DemandForecast/data/processed/predictions.csv'
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:src.entities.train_pipeline_params:Schema loaded successfully
+INFO:root:Predictions are loaded from data/processed/predictions.csv
+INFO:root:Request from how_much_to_order is successful
+INFO:root:Request from stock_level_forecast is successful
+INFO:root:Request from low_stock_sku_list is successful
+ERROR:root:Validation error: [{'loc': ('body', 'sku', 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]
+ERROR:root:Validation error: [{'loc': ('body', 'sku', 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]
+ERROR:root:Validation error: [{'loc': ('body', 'sku_stock', 0, 'sku_id'), 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]

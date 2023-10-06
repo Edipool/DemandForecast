@@ -1,0 +1,64 @@
+# For remote server deployment
+version: '3.7'
+
+services:
+  app:
+    image: edipool/demandforecast_app:latest
+    container_name: app
+    volumes:
+      - ./src/:/usr/src/app/
+      - ./logs/:/usr/logs/
+    ports:
+      - "8001:8000"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+
+  streamlit:
+    image: edipool/demandforecast_streamlit:latest
+    container_name: streamlit_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - app
+      - grafana
+      - prometheus
+
+volumes:
+  prometheus_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./prometheus_data
+
+  grafana_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./grafana_data
+      
+  logs_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./logs
+
+  postgres_data:
