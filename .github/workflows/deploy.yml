@@ -6,6 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
 
     steps:
@@ -25,4 +26,4 @@ jobs:
           sudo chmod -R 777 ./grafana_data
           docker-compose down
           docker-compose build
-          docker-compose up -d
+          docker-compose -f docker-compose.yml up -d
