@@ -21,7 +21,7 @@ jobs:
           docker ps -a -q | xargs -r docker rm
           docker images -q | xargs -r docker rmi
           rm -rf DemandForecast
-          git clone https://github.com/Edipool/DemandForecast
+          git clone -b test_workflow https://github.com/Edipool/DemandForecast.git
           cd DemandForecast
           sudo chmod -R 777 ./grafana_data
           docker-compose down
