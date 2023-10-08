@@ -78,6 +78,10 @@ class MultiTargetModel:
         verbose : bool, optional
             Whether to show progress bar, by default False
             Optional to implement, not used in grading.
+
+        Returns
+        -------
+        None
         """
 
         # For each sku_id
@@ -174,8 +178,6 @@ def quantile_loss(y_true: np.ndarray, y_pred: np.ndarray, quantile: float) -> fl
         The quantile loss.
     """
     errors = y_true - y_pred
-    # np.maximum(errors, 0) returns 0 for positive errors and the error value for negative errors.
-    # np.maximum(-errors, 0) returns 0 for negative errors and the error value for positive errors.
     loss = np.mean(
         quantile * np.maximum(errors, 0) + (1 - quantile) * np.maximum(-errors, 0)
     )
@@ -234,6 +236,11 @@ def serialize_model(model, output: str) -> None:
     model : object
         Model to serialize.
     output : str
+        Path to output file.
+
+    Returns
+    -------
+    str
         Path to output file.
     """
     with open(output, "wb") as file:

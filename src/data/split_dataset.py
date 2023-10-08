@@ -9,7 +9,6 @@ def split_train_test(
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Split the data into train and test sets.
-
     The last `test_days` days are held out for testing.
 
     Parameters:

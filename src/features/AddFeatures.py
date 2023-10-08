@@ -8,6 +8,14 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class AddFeatures(BaseEstimator, TransformerMixin):
+    """
+    The class adds features to the DataFrame.
+
+    Attributes:
+        features (Dict[str, Tuple[str, int, str, Optional[int]]]): The dictionary with the features.
+
+    """
+
     def __init__(self, features: Dict[str, Tuple[str, int, str, Optional[int]]]):
         self.features = features
 
@@ -15,6 +23,16 @@ class AddFeatures(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
+        """
+        Add features to the DataFrame.
+
+        Parameters:
+            X (pd.DataFrame): The input DataFrame.
+            y: The target values.
+
+        Returns:
+            pd.DataFrame: The DataFrame with the added features.
+        """
         X_copy = X.copy()
         self._add_features(X_copy, self.features)
         return X_copy.dropna()
@@ -22,6 +40,23 @@ class AddFeatures(BaseEstimator, TransformerMixin):
     def _add_features(
         self, df: pd.DataFrame, features: Dict[str, Tuple[str, int, str, Optional[int]]]
     ) -> None:
+        """
+        This method adds attributes to the DataFrame by applying the specified aggregation functions to the windows defined
+        by the 'days' parameters. First, the DataFrame is grouped by 'sku_id', after which aggregation is applied
+        to the specified 'aeg_col' column within each group.
+
+        Parameters:
+            df (pd.DataFrame): The input DataFrame.
+            features (Dict[str, Tuple[str, int, str, Optional[int]]]):
+            The dictionary with the features:
+                agg_col (str): The name of the column to aggregate.
+                days (int): The number of days to aggregate.
+                agg_func (str): The name of the aggregation function.
+                quantile (Optional[int]): The quantile to compute (default: None).
+
+        Returns:
+            None
+        """
         for feature_name, (agg_col, days, agg_func, quantile) in features.items():
             if agg_func == "quantile":
                 df[feature_name] = (

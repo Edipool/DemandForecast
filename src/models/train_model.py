@@ -171,8 +171,6 @@ def quantile_loss(y_true: np.ndarray, y_pred: np.ndarray, quantile: float) -> fl
         The quantile loss.
     """
     errors = y_true - y_pred
-    # np.maximum(errors, 0) returns 0 for positive errors and the error value for negative errors.
-    # np.maximum(-errors, 0) returns 0 for negative errors and the error value for positive errors.
     loss = np.mean(
         quantile * np.maximum(errors, 0) + (1 - quantile) * np.maximum(-errors, 0)
     )

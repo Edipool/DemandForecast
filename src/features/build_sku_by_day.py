@@ -6,7 +6,22 @@ from src.entities.train_pipeline_params import read_training_pipeline_params
 def sku_demand_by_day(
     demand_orders: pd.DataFrame, demand_orders_status: pd.DataFrame
 ) -> pd.DataFrame:
-    """Converts data from SQL to pandas DataFrame."""
+    """
+    Converts data from SQL to pandas DataFrame.
+        1. Converts 'timestamp' into a datetime object and creates a new 'day' column with the date.
+        2. Creates a cross combination of unique days and unique SKUs.
+        3. Defines order IDs with delivery statuses (1, 3, 4, 5, 6).
+        4. Calculates the total number of products sold for each pair (day, SKU).
+        5. Combines sales data with SKU information.
+        6. Returns the result with columns 'day', 'sku_id', 'sku', 'price', and 'qty' sorted by 'sku_id' and 'day'.
+
+    Parameters:
+        demand_orders (pd.DataFrame): The demand_orders DataFrame.
+        demand_orders_status (pd.DataFrame): The demand_orders_status DataFrame.
+
+    Returns:
+        pd.DataFrame: The DataFrame with the sales data.
+    """
     # Convert timestamp to datetime
     demand_orders["timestamp"] = pd.to_datetime(demand_orders["timestamp"])
     demand_orders["day"] = demand_orders["timestamp"].dt.strftime("%Y-%m-%d")

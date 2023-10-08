@@ -19,6 +19,24 @@ PATH = "configs/train_config.yaml"
 
 @dataclass()
 class TrainPipelineParams:
+    """
+    The class makes it possible to store all the parameters of the training pipeline in one place.
+
+    Attributes:
+        feature_params (FeatureParams): The parameters for the features.
+        split_params (SplitParams): The parameters for the split.
+        model_params (ModelParams): The parameters for the model.
+        input_demand_orders (str): The path to the demand_orders csv file.
+        input_demand_orders_status (str): The path to the demand_orders_status csv file.
+        output_sku_demand_day (str): The path to the sku_demand_day csv file.
+        output_features_and_targets (str): The path to the features_and_targets csv file.
+        output_losses (str): The path to the losses json file.
+        output_model (str): The path to the model pkl file.
+        input_sales (str): The path to the sales csv file.
+        input_features (str): The path to the features csv file.
+        output_predictions (str): The path to the predictions csv file.
+    """
+
     feature_params: FeatureParams
     split_params: SplitParams
     model_params: ModelParams
@@ -41,6 +59,15 @@ TrainingPipelineParamsSchema = class_schema(TrainPipelineParams)
 
 
 def read_training_pipeline_params(path: str) -> TrainPipelineParams:
+    """
+    Read the training pipeline parameters from the yaml file.
+
+    Parameters:
+        path (str): The path to the yaml file.
+
+    Returns:
+        TrainPipelineParams: The parameters for the training pipeline.
+    """
     with open(path, "r") as input_stream:
         config_dict = yaml.safe_load(input_stream)
         schema = TrainingPipelineParamsSchema().load(config_dict)
