@@ -1,4 +1,4 @@
 ['remote "s3"']
-    url = s3://regsys
+    url = s3://demandforecast
     endpointurl = https://storage.yandexcloud.net
     region = ru-msk

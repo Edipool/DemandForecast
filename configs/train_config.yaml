@@ -54,4 +54,3 @@ model_params:
     ]
   horizons: [7, 14, 21]
   quantiles: [0.1, 0.5, 0.9]
-

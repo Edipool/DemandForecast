@@ -8,3 +8,4 @@ setup(
     author="Eduard Poliakov",
     license="MIT",
 )
+
