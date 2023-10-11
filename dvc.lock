@@ -5,12 +5,12 @@ stages:
     deps:
     - path: configs/train_config.yaml
       hash: md5
-      md5: 13e83b12e34936c604ef202fd6bde205
-      size: 1564
+      md5: 53f88f03a25eea92c96e97d035940590
+      size: 1567
     - path: data
       hash: md5
-      md5: 2677e5e9b5b0dc2ea701901720ca836a.dir
-      size: 44982657
+      md5: 5e6d96c69c8f2e7fd1197b32d9aaa3b1.dir
+      size: 44982290
       nfiles: 11
     outs:
     - path: models/losses.json
