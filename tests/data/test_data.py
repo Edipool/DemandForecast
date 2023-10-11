@@ -4,8 +4,10 @@ import sys
 import pandas as pd
 
 from src.features.build_sku_by_day import sku_demand_by_day
-from src.features.build_transformer import (features_and_targets_transformer,
-                                            save_transformed_data)
+from src.features.build_transformer import (
+    features_and_targets_transformer,
+    save_transformed_data,
+)
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)

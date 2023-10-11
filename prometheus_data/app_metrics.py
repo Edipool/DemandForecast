@@ -1,17 +1,4 @@
-from prometheus_client import Counter, Gauge, Histogram
-
-predict_request_counter = Counter(
-    "http_predict_request_total",
-    "Total HTTP Predict Requests",
-)
-predict_request_latency = Histogram(
-    "http_predict_request_latency_seconds",
-    "HTTP Predict Request Latency",
-)
-predict_request_gauge = Gauge(
-    "http_predict_request_gauge",
-    "HTTP Predict Request Gauge",
-)
+from prometheus_client import Counter, Histogram
 
 how_much_to_order_request_count = Counter(
     "how_much_to_order_requests_total",

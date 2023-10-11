@@ -1,4 +1,2 @@
-# external requirements
-
 requests==2.31.0
 streamlit == 1.26.0
