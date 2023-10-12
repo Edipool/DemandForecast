@@ -36,3 +36,7 @@ stop_services:
 	@echo "Stopping services..."
 	docker stop app prometheus grafana streamlit_app
 	docker rm app prometheus grafana streamlit_app
+
+save_structure:
+	@ echo "Saving project structure..."
+	tree -I 'venv|__pycache__' > project_structure.txt
