@@ -1,5 +1,2 @@
 include requirements.txt
-recursive-include data *
-recursive-include configs *
-recursive-include models *
 recursive-include src *
