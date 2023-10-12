@@ -21,6 +21,7 @@ protobuf==3.20.0
 python-multipart==0.0.6
 prometheus-fastapi-instrumentator==6.1.0
 prometheus-client==0.17.1
-black
-flake8
-isort
+click==8.1.7
+black==23.9.1
+flake8==6.1.0
+isort==5.12.0
