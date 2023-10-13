@@ -37,6 +37,6 @@ stop_services:
 	docker stop app prometheus grafana streamlit_app
 	docker rm app prometheus grafana streamlit_app
 
-save_structure:
+save_tree:
 	@ echo "Saving project structure..."
-	tree -I 'venv|__pycache__' > project_structure.txt
+	tree -L 4 -I 'venv|__pycache__|mlruns|dist|grafana_data|*egg-info' > project_structure.txt
