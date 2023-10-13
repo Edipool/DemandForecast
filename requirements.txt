@@ -24,3 +24,7 @@ prometheus-client==0.17.1
 click==8.1.7
 black==23.9.1
 isort==5.12.0
+python-dotenv==1.0.0
+mlflow==1.19.0
+dvc==3.22.0
+dvc-s3==2.23.0

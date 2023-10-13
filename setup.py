@@ -6,7 +6,7 @@ with open("requirements.txt", "r", encoding="utf-8") as req_file:
 with open("README.md", "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-version = "1.0.3.14"
+version = "1.0.3.16"
 
 setup(
     name="demand_forecast_source",
