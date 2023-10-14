@@ -1,7 +1,8 @@
 Demand Forecast
 ==============================
-## What is the project about
+## What is the project about?
 Products such as electronics, household appliances have varying characteristics and demand cycles. Category managers, responsible for overseeing these items throughout their lifecycle, face challenges in planning purchases, especially when the assortment spans thousands of items. As data volume increases and platform complexity grows, traditional methods of inventory management and demand forecasting become less effective. In response to these challenges, Supermegaretaillite is investing in the development of an automated system, including an ML-based demand forecasting service.
+To preserve the primacy of the source code, the SRC module is loaded in [PyPi](https://pypi.org/project/demand-forecast-source) for further use in repositories [training-pipeline](https://github.com/Edipool/Demand_Forecast_Airflow) and inference-pipeline.
 
 ## How use this project?
 This project is deployed on the server and is fully ready to work 24/7.
@@ -13,8 +14,11 @@ If you want to use this service, you need to:
 3.2 "Get stock level" to find out how much stock you will have in 7 days.
 3.3 "Get low stock sku id" to find out which products will be out of stock in 7 days.
 
+## Pipeline this project
+![Demand_Forencast_Pipeline.jpg](images/Demand_Forencast_Pipeline.jpg)
+
 ## Main tools used
-![Pyhon](https://img.shields.io/badge/-Python-090909?style=for-the-badge&logo=python) ![Streamlit](https://img.shields.io/badge/-Streamlit-090909?style=for-the-badge&logo=Streamlit) ![Fastapi](https://img.shields.io/badge/-Fastapi-090909?style=for-the-badge&logo=Fastapi) ![DVC](https://img.shields.io/badge/-DVC-090909?style=for-the-badge&logo=DVC) ![Amazon S3](https://img.shields.io/badge/-Amazon_S3-090909?style=for-the-badge&logo=Amazon_S3) ![Mlflow](https://img.shields.io/badge/-mlflov-090909?style=for-the-badge&logo=mlflow) ![Docker](https://img.shields.io/badge/-Docker-090909?style=for-the-badge&logo=Docker) ![Docker Compose](https://img.shields.io/badge/-docker_compose-090909?style=for-the-badge&logo=docker_compose) ![Scikit_learn](https://img.shields.io/badge/-Scikit_learn-090909?style=for-the-badge&logo=Scikit_learn) ![Grafana_data](https://img.shields.io/badge/-Grafana_data-090909?style=for-the-badge&logo=Grafana) ![MLOps](https://img.shields.io/badge/-MLOps-090909?style=for-the-badge&logo=MLOps) ![ML System Design Document](https://img.shields.io/badge/-ML_System_Design-090909?style=for-the-badge&logo=ML_System_Design)
+![MLOps](https://img.shields.io/badge/-MLOps-090909?style=for-the-badge&logo=MLOps) ![ML System Design Document](https://img.shields.io/badge/-ML_System_Design-090909?style=for-the-badge&logo=ML_System_Design) ![Streamlit](https://img.shields.io/badge/-Streamlit-090909?style=for-the-badge&logo=Streamlit) ![Fastapi](https://img.shields.io/badge/-Fastapi-090909?style=for-the-badge&logo=Fastapi) ![DVC](https://img.shields.io/badge/-DVC-090909?style=for-the-badge&logo=DVC) ![Amazon S3](https://img.shields.io/badge/-Amazon_S3-090909?style=for-the-badge&logo=Amazon_S3) ![Mlflow](https://img.shields.io/badge/-mlflov-090909?style=for-the-badge&logo=mlflow) ![Docker](https://img.shields.io/badge/-Docker-090909?style=for-the-badge&logo=Docker) ![Docker Compose](https://img.shields.io/badge/-docker_compose-090909?style=for-the-badge&logo=docker_compose) ![Scikit_learn](https://img.shields.io/badge/-Scikit_learn-090909?style=for-the-badge&logo=Scikit_learn) ![Grafana_data](https://img.shields.io/badge/-Grafana_data-090909?style=for-the-badge&logo=Grafana) ![CI/CD](https://img.shields.io/badge/-CI/CD-090909?style=for-the-badge&logo=CI/CD)
 
 ## Project Organization
 ------------
