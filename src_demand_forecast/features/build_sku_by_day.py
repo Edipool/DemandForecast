@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.demand_forecast_source.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
 
 
 def sku_demand_by_day(

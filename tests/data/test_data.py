@@ -3,8 +3,8 @@ import sys
 
 import pandas as pd
 
-from src.demand_forecast_source.features.build_sku_by_day import sku_demand_by_day
-from src.demand_forecast_source.features.build_transformer import (
+from src_demand_forecast.features.build_sku_by_day import sku_demand_by_day
+from src_demand_forecast.features.build_transformer import (
     features_and_targets_transformer,
     save_transformed_data,
 )
