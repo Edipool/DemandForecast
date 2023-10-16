@@ -8,8 +8,8 @@ import pandas as pd
 from sklearn.linear_model import QuantileRegressor
 from tqdm import tqdm
 
-from src.data.split_dataset import split_train_test
-from src.entities.train_pipeline_params import read_training_pipeline_params
+from src.demand_forecast_source.data.split_dataset import split_train_test
+from src.demand_forecast_source.entities.train_pipeline_params import read_training_pipeline_params
 
 PATH = "configs/train_config.yaml"
 params = read_training_pipeline_params(PATH)

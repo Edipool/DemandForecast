@@ -5,9 +5,9 @@ from dataclasses import dataclass, field
 import yaml
 from marshmallow_dataclass import class_schema
 
-from src.entities.feature_params import FeatureParams
-from src.entities.model_params import ModelParams
-from src.entities.split_params import SplitParams
+from src.demand_forecast_source.entities.feature_params import FeatureParams
+from src.demand_forecast_source.entities.model_params import ModelParams
+from src.demand_forecast_source.entities.split_params import SplitParams
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)

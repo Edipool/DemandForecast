@@ -1,6 +1,6 @@
 # Input data
-input_demand_orders: "data/raw/demand_orders_2023_09_22.csv"
-input_demand_orders_status: "data/raw/demand_orders_status_2023_09_22.csv"
+input_demand_orders: "data/raw/demand_orders.csv"
+input_demand_orders_status: "data/raw/demand_orders_status.csv"
 input_sales: "data/raw/sales.csv"
 input_features: "data/raw/features.csv"
 # Output data

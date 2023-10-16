@@ -4,9 +4,9 @@ import sys
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.entities.train_pipeline_params import read_training_pipeline_params
-from src.features.AddFeatures import AddFeatures
-from src.features.AddTargets import AddTargets
+from src.demand_forecast_source.entities.train_pipeline_params import read_training_pipeline_params
+from src.demand_forecast_source.features.AddFeatures import AddFeatures
+from src.demand_forecast_source.features.AddTargets import AddTargets
 
 PATH = "configs/train_config.yaml"
 params = read_training_pipeline_params(PATH)
