@@ -6,12 +6,11 @@ with open("requirements.txt", "r", encoding="utf-8") as req_file:
 with open("README.md", "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-version = "1.0.3.17"
+version = "1.0.3.39"
 
 setup(
     name="src_demand_forecast",
-    packages=find_packages(where="src_demand_forecast"),
-    package_dir={"": "src_demand_forecast"},
+    packages=find_packages(),
     version=version,
     description="This is lib-predicts for demand forecast based on machine learning",
     long_description=readme,
