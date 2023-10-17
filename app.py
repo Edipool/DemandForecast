@@ -17,8 +17,8 @@ from prometheus_data.app_metrics import (
     how_much_to_order_response_time,
     how_much_to_order_successful_requests,
 )
-from src.entities.train_pipeline_params import read_training_pipeline_params
-from src.entities.validation_params import LowStockSKURequest, SKURequest
+from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.entities.validation_params import LowStockSKURequest, SKURequest
 
 app = FastAPI()
 Instrumentator().instrument(app).expose(app)
