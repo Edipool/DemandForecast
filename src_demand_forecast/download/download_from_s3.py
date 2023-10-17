@@ -2,7 +2,6 @@ import os
 import boto3
 import logging
 import sys
-import click
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
