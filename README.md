@@ -7,7 +7,7 @@ To preserve the primacy of the source code, the SRC module is loaded in [PyPi](h
 ## How use this project?
 This project is deployed on the server and is fully ready to work 24/7.
 If you want to use this service, you need to:
-1. Open [this](http://193.222.62.88:8501) web adress
+1. Open [this](http://45.91.8.168:8501) web adress
 2. For example, you would like to know the demand for the product with sku id 20 for the next 7 days. You should fill in the fields in web service: SKU_ID = 20, Stock = 10, Horizon Days = 7, Confidence Level = 0.90
 3. Сlick the buttons:
 3.1 "Get how much to order" to find out how much diawara you need to order from the supplier.
