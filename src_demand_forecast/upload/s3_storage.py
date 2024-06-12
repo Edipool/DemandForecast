@@ -1,7 +1,11 @@
-import os
-import boto3
+"""
+This script uploads files to Yandex Object Storage (Yandex S3).
+"""
 import logging
+import os
 import sys
+
+import boto3
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -22,15 +26,17 @@ s3_client = session.client(
     endpoint_url="https://storage.yandexcloud.net",
 )
 
+
 def upload_dataset(
-    local_path: str,
-    s3_bucket: str,
-    remote_path: str,
-    file_names: list = None
+    local_path: str, s3_bucket: str, remote_path: str, file_names: list = None
 ):
     if file_names is None:
         # If file_names is None, upload all files in the local_path
-        file_names = [f for f in os.listdir(local_path) if os.path.isfile(os.path.join(local_path, f))]
+        file_names = [
+            f
+            for f in os.listdir(local_path)
+            if os.path.isfile(os.path.join(local_path, f))
+        ]
 
     for file_name in file_names:
         local_file_path = os.path.join(local_path, file_name)
@@ -40,6 +46,7 @@ def upload_dataset(
 
         logger.info(f"local_file_path: {local_file_path}")
         logger.info(f"remote_path: {remote_file_path}")
+
 
 if __name__ == "__main__":
     upload_dataset()

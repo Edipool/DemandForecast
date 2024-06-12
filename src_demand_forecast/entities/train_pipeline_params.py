@@ -1,3 +1,6 @@
+"""
+This module contains template for the training pipeline parameters.
+"""
 import logging
 import sys
 from dataclasses import dataclass, field

@@ -1,3 +1,7 @@
+"""
+This module contains the class for adding features to the DataFrame.
+"""
+
 import logging
 import sys
 from typing import Dict, Optional, Tuple

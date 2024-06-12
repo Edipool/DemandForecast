@@ -39,4 +39,16 @@ stop_services:
 
 save_tree:
 	@ echo "Saving project structure..."
-	tree -L 4 -I 'venv|__pycache__|mlruns|dist|grafana_data|*egg-info' > project_structure.txt
+	tree -L 4 -I 'venv|__pycache__|mlruns|dist|grafana_data|*egg-info|build|source|make.bat' > project_structure.txt
+
+docs:
+	@echo "Updating documentation..."
+	@cd docs && make html
+
+# Run linting
+lint:
+	find . -name '*.py' | xargs pylint --disable=E0401,W0611,R0902,R0903 > logs/pylint_report.txt || true
+
+# Run sort imports and black
+format:
+	isort . && black .

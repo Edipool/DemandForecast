@@ -1,10 +1,15 @@
+"""
+This module contains functions for building a transformer and saving transformed data.
+"""
 import logging
 import sys
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.entities.train_pipeline_params import (
+    read_training_pipeline_params,
+)
 from src_demand_forecast.features.AddFeatures import AddFeatures
 from src_demand_forecast.features.AddTargets import AddTargets
 

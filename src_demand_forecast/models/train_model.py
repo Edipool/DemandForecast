@@ -1,3 +1,8 @@
+"""
+This module contains the code to train a multi-target model.
+The model is trained on the data and then used to make predictions.
+The predictions are evaluated using the quantile loss metric.
+"""
 import logging
 import sys
 from typing import List
@@ -9,7 +14,9 @@ from sklearn.linear_model import QuantileRegressor
 from tqdm import tqdm
 
 from src_demand_forecast.data.split_dataset import split_train_test
-from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.entities.train_pipeline_params import (
+    read_training_pipeline_params,
+)
 
 PATH = "configs/train_config.yaml"
 params = read_training_pipeline_params(PATH)

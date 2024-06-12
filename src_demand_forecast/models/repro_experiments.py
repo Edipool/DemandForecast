@@ -1,3 +1,7 @@
+"""
+This module contains the MultiTargetModel class, which is used to train a quantile regression model
+for multiple targets.
+"""
 import logging
 import sys
 from itertools import product
@@ -11,8 +15,10 @@ from mlflow import sklearn
 from sklearn.linear_model import QuantileRegressor
 from tqdm import tqdm
 
-from src.data.split_dataset import split_train_test
-from src.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.data.split_dataset import split_train_test
+from src_demand_forecast.entities.train_pipeline_params import (
+    read_training_pipeline_params,
+)
 
 PATH = "configs/train_config.yaml"
 params = read_training_pipeline_params(PATH)

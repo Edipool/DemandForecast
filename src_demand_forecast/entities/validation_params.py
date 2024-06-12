@@ -1,3 +1,6 @@
+"""
+This module contains template for the validation parameters.
+"""
 from typing import List
 
 from pydantic import BaseModel, Field

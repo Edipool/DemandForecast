@@ -1,3 +1,6 @@
+"""
+This module contains template for split parameters.
+"""
 from dataclasses import dataclass
 
 

@@ -3,7 +3,7 @@ import streamlit as st
 
 
 def app():
-    st.title("Hello it is Demand Forecast servis!")
+    st.title("Hello it is Demand Forecast service!")
 
     # Make variables for user input
     sku_id = st.number_input("Enter SKU ID:", value=1)

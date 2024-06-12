@@ -1,6 +1,11 @@
+"""
+This module contains functions for creating a DataFrame with sales data.
+"""
 import pandas as pd
 
-from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
+from src_demand_forecast.entities.train_pipeline_params import (
+    read_training_pipeline_params,
+)
 
 
 def sku_demand_by_day(
@@ -14,11 +19,9 @@ def sku_demand_by_day(
         4. Calculates the total number of products sold for each pair (day, SKU).
         5. Combines sales data with SKU information.
         6. Returns the result with columns 'day', 'sku_id', 'sku', 'price', and 'qty' sorted by 'sku_id' and 'day'.
-
     Parameters:
         demand_orders (pd.DataFrame): The demand_orders DataFrame.
         demand_orders_status (pd.DataFrame): The demand_orders_status DataFrame.
-
     Returns:
         pd.DataFrame: The DataFrame with the sales data.
     """

@@ -1,7 +1,11 @@
-import os
-import boto3
+"""
+This module is used to download the dataset from the Yandex.Cloud storage.
+"""
 import logging
+import os
 import sys
+
+import boto3
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -22,11 +26,9 @@ s3_client = session.client(
     endpoint_url="https://storage.yandexcloud.net",
 )
 
+
 def download_dataset(
-    s3_bucket: str,
-    remote_path: str,
-    output_path: str,
-    file_names: list = None
+    s3_bucket: str, remote_path: str, output_path: str, file_names: list = None
 ):
     if file_names is None:
         file_names = ["demand_orders.csv", "demand_orders_status.csv"]

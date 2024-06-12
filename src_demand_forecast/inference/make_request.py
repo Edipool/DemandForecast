@@ -1,3 +1,6 @@
+"""
+This module contains functions for making requests to the FastAPI server.
+"""
 import logging
 import os
 from time import sleep
@@ -19,7 +22,18 @@ logger.addHandler(handler)
 
 
 def check_response(response) -> None:
-    """Проверяет статус ответа и выводит соответствующее сообщение."""
+    """
+    Check the response from the FastAPI server.
+
+    Parameters
+    ----------
+    response : requests.models.Response
+        The response from the FastAPI server.
+
+    Returns
+    -------
+    None
+    """
     if response.status_code == 200:
         logger.info(f"Success (Code 200): {response.json()}")
     else:
@@ -29,6 +43,24 @@ def check_response(response) -> None:
 def how_much_to_order(
     sku_id: int, stock: int, horizon_days: int, confidence_level: float
 ) -> None:
+    """
+    Make a request to the FastAPI server to get the order quantity.
+
+    Parameters
+    ----------
+    sku_id : int
+        The SKU id.
+    stock : int
+        The current stock level.
+    horizon_days : int
+        The number of days in the horizon.
+    confidence_level : float
+        The confidence level.
+
+    Returns
+    -------
+    None
+    """
     url = f"{BASE_URL}/api/how_much_to_order"
     payload = {
         "sku": {"sku_id": sku_id, "stock": stock},
@@ -42,6 +74,24 @@ def how_much_to_order(
 def stock_level_forecast(
     sku_id: int, stock: int, horizon_days: int, confidence_level: float
 ) -> None:
+    """
+    Get the stock level forecast.
+
+    Parameters
+    ----------
+    sku_id : int
+        The SKU id.
+    stock : int
+        The current stock level.
+    horizon_days : int
+        The number of days in the horizon.
+    confidence_level : float
+        The confidence level.
+
+    Returns
+    -------
+    None
+    """
     url = f"{BASE_URL}/api/stock_level_forecast"
     payload = {
         "sku": {"sku_id": sku_id, "stock": stock},
@@ -55,6 +105,22 @@ def stock_level_forecast(
 def low_stock_sku_list(
     confidence_level: float, horizon_days: int, sku_stock: List[dict]
 ) -> None:
+    """
+    Get the list of low stock SKUs.
+
+    Parameters
+    ----------
+    confidence_level : float
+        The confidence level.
+    horizon_days : int
+        The number of days in the horizon.
+    sku_stock : List[dict]
+        The list of dictionaries with the SKU id and stock level.
+
+    Returns
+    -------
+    None
+    """
     url = f"{BASE_URL}/api/low_stock_sku_list"
     payload = {
         "confidence_level": confidence_level,

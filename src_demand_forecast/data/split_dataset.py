@@ -1,3 +1,6 @@
+"""
+This module contains the function to split the data into train and test sets.
+"""
 from typing import Tuple
 
 import pandas as pd

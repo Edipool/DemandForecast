@@ -1,3 +1,6 @@
+"""
+This module contains template class for model parameters.
+"""
 from dataclasses import dataclass
 from typing import List
 

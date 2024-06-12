@@ -6,13 +6,22 @@ import sys
 import pandas as pd
 
 from src_demand_forecast.data.split_dataset import split_train_test
-from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
-from src_demand_forecast.features.build_sku_by_day import save_sku_demand_by_day, sku_demand_by_day
+from src_demand_forecast.entities.train_pipeline_params import (
+    read_training_pipeline_params,
+)
+from src_demand_forecast.features.build_sku_by_day import (
+    save_sku_demand_by_day,
+    sku_demand_by_day,
+)
 from src_demand_forecast.features.build_transformer import (
     features_and_targets_transformer,
     save_transformed_data,
 )
-from src_demand_forecast.models.train_model import MultiTargetModel, evaluate_model, serialize_model
+from src_demand_forecast.models.train_model import (
+    MultiTargetModel,
+    evaluate_model,
+    serialize_model,
+)
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)

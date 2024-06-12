@@ -20,11 +20,11 @@ setup(
     license="MIT",
     install_requires=install_requires,
     package_data={
-        'src_demand_forecast': ['demand_forecast_source/*'],
+        "src_demand_forecast": ["demand_forecast_source/*"],
     },
     include_package_data=True,
     url="https://github.com/Edipool/DemandForecast",
     classifiers=[
-        'Programming Language :: Python :: 3.8',
+        "Programming Language :: Python :: 3.8",
     ],
 )

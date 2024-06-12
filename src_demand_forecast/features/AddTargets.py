@@ -1,3 +1,6 @@
+"""
+The module contains the class for adding targets to the DataFrame.
+"""
 from typing import Dict, Tuple
 
 import numpy as np

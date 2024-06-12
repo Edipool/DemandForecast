@@ -1,3 +1,7 @@
+"""
+This module contains template the class for feature
+"""
+
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
