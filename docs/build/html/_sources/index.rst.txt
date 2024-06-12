@@ -28,28 +28,10 @@ If you want to use this service, you need to:
 1. Open `this <http://45.91.8.168:8501>`_ web address.
 2. For example, you would like to know the demand for the product with SKU ID 20 for the next 7 days. You should fill in the fields in web service: SKU_ID = 20, Stock = 10, Horizon Days = 7, Confidence Level = 0.90.
 3. Click the buttons:
-    - "Get how much to order" to find out how much inventory you need to order from the supplier.
-    - "Get stock level" to find out how much stock you will have in 7 days.
-    - "Get low stock SKU ID" to find out which products will be out of stock in 7 days.
+- "Get how much to order" to find out how much inventory you need to order from the supplier.
+- "Get stock level" to find out how much stock you will have in 7 days.
+- "Get low stock SKU ID" to find out which products will be out of stock in 7 days.
 
-Project Pipeline
-----------------
-.. image:: ../images/Demand_Forencast_Pipeline.jpg
-
-Main tools used
----------------
-.. image:: https://img.shields.io/badge/-MLOps-090909?style=for-the-badge&logo=MLOps
-.. image:: https://img.shields.io/badge/-ML_System_Design-090909?style=for-the-badge&logo=ML_System_Design
-.. image:: https://img.shields.io/badge/-Streamlit-090909?style=for-the-badge&logo=Streamlit
-.. image:: https://img.shields.io/badge/-Fastapi-090909?style=for-the-badge&logo=Fastapi
-.. image:: https://img.shields.io/badge/-DVC-090909?style=for-the-badge&logo=DVC
-.. image:: https://img.shields.io/badge/-Amazon_S3-090909?style=for-the-badge&logo=Amazon_S3
-.. image:: https://img.shields.io/badge/-mlflow-090909?style=for-the-badge&logo=mlflow
-.. image:: https://img.shields.io/badge/-Docker-090909?style=for-the-badge&logo=Docker
-.. image:: https://img.shields.io/badge/-docker_compose-090909?style=for-the-badge&logo=docker_compose
-.. image:: https://img.shields.io/badge/-Scikit_learn-090909?style=for-the-badge&logo=Scikit_learn
-.. image:: https://img.shields.io/badge/-Grafana_data-090909?style=for-the-badge&logo=Grafana
-.. image:: https://img.shields.io/badge/-CI/CD-090909?style=for-the-badge&logo=CI/CD
 
 Project Organization
 --------------------

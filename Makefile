@@ -1,3 +1,4 @@
+.PHONY: docs docs_pdf
 
 app:
 	@echo "Running streamlit_app..."
@@ -44,6 +45,10 @@ save_tree:
 docs:
 	@echo "Updating documentation..."
 	@cd docs && make html
+
+docs_pdf:
+	@echo "Building PDF documentation..."
+	@cd docs && sphinx-build -b latex source build/latex && cd build/latex && pdflatex demand_forecast.tex && pdflatex demand_forecast.tex
 
 # Run linting
 lint:

@@ -11,7 +11,6 @@ from sklearn.base import BaseEstimator, TransformerMixin
 class AddTargets(BaseEstimator, TransformerMixin):
     """
     The class adds targets to the DataFrame.
-
     Attributes:
         targets (Dict[str, Tuple[str, int]]): The dictionary with the targets.
 
@@ -26,7 +25,6 @@ class AddTargets(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         """
         Add targets to the DataFrame.
-
         Parameters:
             X (pd.DataFrame): The input DataFrame.
             y: The target values.
@@ -42,14 +40,12 @@ class AddTargets(BaseEstimator, TransformerMixin):
         This method is designed to add target variables (targets) to the source DataFrame (df).
         Each target variable is calculated by summing the values of the specified column (vag_com)
         in the window of the specified width (days), and this result is shifted back by days.
-
         Parameters:
             df (pd.DataFrame): The input DataFrame.
             targets (Dict[str, Tuple[str, int]]):
             The dictionary with the targets:
                 agg_col (str): The name of the column to aggregate.
                 days (int): The number of days to aggregate.
-
         Returns:
             None
         """

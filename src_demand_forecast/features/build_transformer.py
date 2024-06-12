@@ -23,7 +23,6 @@ logger.addHandler(handler)
 
 def features_and_targets_transformer() -> Pipeline:
     """Builds transformer from config.
-
     Returns:
         Pipeline: The transformer."""
     transformer = Pipeline(

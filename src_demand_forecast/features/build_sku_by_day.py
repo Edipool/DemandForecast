@@ -3,14 +3,9 @@ This module contains functions for creating a DataFrame with sales data.
 """
 import pandas as pd
 
-from src_demand_forecast.entities.train_pipeline_params import (
-    read_training_pipeline_params,
-)
+from src_demand_forecast.entities.train_pipeline_params import read_training_pipeline_params
 
-
-def sku_demand_by_day(
-    demand_orders: pd.DataFrame, demand_orders_status: pd.DataFrame
-) -> pd.DataFrame:
+def sku_demand_by_day(demand_orders: pd.DataFrame, demand_orders_status: pd.DataFrame) -> pd.DataFrame:
     """
     Converts data from SQL to pandas DataFrame.
         1. Converts 'timestamp' into a datetime object and creates a new 'day' column with the date.

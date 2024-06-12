@@ -50,3 +50,4 @@ MOCK_MODULES = {
 
 sys.modules.update(MOCK_MODULES)
 
+exclude_patterns = ['src_demand_forecast/visualization']

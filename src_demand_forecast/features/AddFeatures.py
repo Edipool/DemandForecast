@@ -14,7 +14,6 @@ from sklearn.base import BaseEstimator, TransformerMixin
 class AddFeatures(BaseEstimator, TransformerMixin):
     """
     The class adds features to the DataFrame.
-
     Attributes:
         features (Dict[str, Tuple[str, int, str, Optional[int]]]): The dictionary with the features.
 
@@ -29,11 +28,9 @@ class AddFeatures(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         """
         Add features to the DataFrame.
-
         Parameters:
             X (pd.DataFrame): The input DataFrame.
             y: The target values.
-
         Returns:
             pd.DataFrame: The DataFrame with the added features.
         """
@@ -48,7 +45,6 @@ class AddFeatures(BaseEstimator, TransformerMixin):
         This method adds attributes to the DataFrame by applying the specified aggregation functions to the windows defined
         by the 'days' parameters. First, the DataFrame is grouped by 'sku_id', after which aggregation is applied
         to the specified 'aeg_col' column within each group.
-
         Parameters:
             df (pd.DataFrame): The input DataFrame.
             features (Dict[str, Tuple[str, int, str, Optional[int]]]):
@@ -57,7 +53,6 @@ class AddFeatures(BaseEstimator, TransformerMixin):
                 days (int): The number of days to aggregate.
                 agg_func (str): The name of the aggregation function.
                 quantile (Optional[int]): The quantile to compute (default: None).
-
         Returns:
             None
         """
