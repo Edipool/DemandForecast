@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src_demand_forecast.models.train_model &mdash; Demand Forecast v1.0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=56cef5dd"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demand Forecast
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src_demand_forecast</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../src_demand_forecast.html">src_demand_forecast package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../src_demand_forecast.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.data.html">src_demand_forecast.data package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.download.html">src_demand_forecast.download package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.entities.html">src_demand_forecast.entities package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.features.html">src_demand_forecast.features package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.inference.html">src_demand_forecast.inference package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.models.html">src_demand_forecast.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.upload.html">src_demand_forecast.upload package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../src_demand_forecast.visualization.html">src_demand_forecast.visualization package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../src_demand_forecast.html#module-src_demand_forecast">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demand Forecast</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src_demand_forecast.models.train_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src_demand_forecast.models.train_model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the code to train a multi-target model.</span>
+<span class="sd">The model is trained on the data and then used to make predictions.</span>
+<span class="sd">The predictions are evaluated using the quantile loss metric.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">src_demand_forecast.data.split_dataset</span> <span class="kn">import</span> <span class="n">split_train_test</span>
+<span class="kn">from</span> <span class="nn">src_demand_forecast.entities.train_pipeline_params</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">read_training_pipeline_params</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">PATH</span> <span class="o">=</span> <span class="s2">&quot;configs/train_config.yaml&quot;</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">read_training_pipeline_params</span><span class="p">(</span><span class="n">PATH</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MultiTargetModel"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.MultiTargetModel">[docs]</a><span class="k">class</span> <span class="nc">MultiTargetModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">horizons</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">],</span>
+        <span class="n">quantiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        features : List[str]</span>
+<span class="sd">            List of features columns.</span>
+<span class="sd">        horizons : List[int]</span>
+<span class="sd">            List of horizons.</span>
+<span class="sd">        quantiles : List[float]</span>
+<span class="sd">            List of quantiles.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fitted_models_ : dict</span>
+<span class="sd">            Dictionary with fitted models for each sku_id.</span>
+<span class="sd">            Example:</span>
+<span class="sd">            {</span>
+<span class="sd">                sku_id_1: {</span>
+<span class="sd">                    (quantile_1, horizon_1): model_1,</span>
+<span class="sd">                    (quantile_1, horizon_2): model_2,</span>
+<span class="sd">                    ...</span>
+<span class="sd">                },</span>
+<span class="sd">                sku_id_2: {</span>
+<span class="sd">                    (quantile_1, horizon_1): model_3,</span>
+<span class="sd">                    (quantile_1, horizon_2): model_4,</span>
+<span class="sd">                    ...</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            }</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantiles</span> <span class="o">=</span> <span class="n">quantiles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizons</span> <span class="o">=</span> <span class="n">horizons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span> <span class="o">=</span> <span class="s2">&quot;sku_id&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date_col</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;next_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d&quot;</span> <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizons</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitted_models_</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="MultiTargetModel.fit"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.MultiTargetModel.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit model on data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : pd.DataFrame</span>
+<span class="sd">            Data to fit on.</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            Whether to show progress bar, by default False</span>
+<span class="sd">            Optional to implement, not used in grading.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># For each sku_id</span>
+        <span class="k">for</span> <span class="n">sku_id</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+            <span class="c1"># Make a dictionary for this sku_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitted_models_</span><span class="p">[</span><span class="n">sku_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># For each horizon (7, 14, 21 days):</span>
+            <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizons</span><span class="p">:</span>
+                <span class="c1"># For each quantile (0.1, 0.5, 0.9):</span>
+                <span class="k">for</span> <span class="n">quantile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantiles</span><span class="p">:</span>
+                    <span class="c1"># Fit a model for this sku_id, horizon and quantile</span>
+                    <span class="n">model</span> <span class="o">=</span> <span class="n">QuantileRegressor</span><span class="p">(</span><span class="n">quantile</span><span class="o">=</span><span class="n">quantile</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;highs&quot;</span><span class="p">)</span>
+                    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+                        <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">sku_id</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">sku_id</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;next_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="c1"># Save the model to the dictionary</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fitted_models_</span><span class="p">[</span><span class="n">sku_id</span><span class="p">][(</span><span class="n">quantile</span><span class="p">,</span> <span class="n">horizon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">model</span></div>
+
+<div class="viewcode-block" id="MultiTargetModel.predict"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.MultiTargetModel.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict on data.</span>
+<span class="sd">        Predict 0 values for a new sku_id.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : pd.DataFrame</span>
+<span class="sd">            Data to predict on.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pd.DataFrame</span>
+<span class="sd">            Predictions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">predictions_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Each sku_id</span>
+        <span class="k">for</span> <span class="n">sku_id</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+            <span class="n">sku_predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="n">sku_predictions</span><span class="p">[</span><span class="s2">&quot;sku_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sku_id</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">sku_id</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">sku_predictions</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">sku_id</span><span class="p">][</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">date_col</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+            <span class="c1"># For each horizon (7, 14, 21 days):</span>
+            <span class="k">if</span> <span class="n">sku_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted_models_</span><span class="p">:</span>
+                <span class="c1"># If there is no model for this sku_id, predict 0</span>
+                <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizons</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">quantile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantiles</span><span class="p">:</span>
+                        <span class="n">sku_predictions</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;pred_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d_q</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">quantile</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If there is a model for this sku_id, predict</span>
+                <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizons</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">quantile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantiles</span><span class="p">:</span>
+                        <span class="c1"># Get model from dictionary</span>
+                        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted_models_</span><span class="p">[</span><span class="n">sku_id</span><span class="p">][(</span><span class="n">quantile</span><span class="p">,</span> <span class="n">horizon</span><span class="p">)]</span>
+                        <span class="c1"># Get predictions</span>
+                        <span class="n">pred_values</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+                            <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sku_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">sku_id</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">]</span>
+                        <span class="p">)</span>
+                        <span class="n">sku_predictions</span><span class="p">[</span>
+                            <span class="sa">f</span><span class="s2">&quot;pred_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d_q</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">quantile</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">pred_values</span>
+
+            <span class="c1"># Append predictions for this sku_id to the list</span>
+            <span class="n">sku_predictions</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">predictions_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku_predictions</span><span class="p">)</span>
+
+        <span class="n">predictions_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">predictions_list</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Sort by sku_id and day</span>
+        <span class="n">predictions_df</span> <span class="o">=</span> <span class="n">predictions_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">predictions_df</span></div></div>
+
+
+<div class="viewcode-block" id="quantile_loss"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.quantile_loss">[docs]</a><span class="k">def</span> <span class="nf">quantile_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">quantile</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the quantile loss between the true and predicted values.</span>
+
+<span class="sd">    The quantile loss measures the deviation between the true</span>
+<span class="sd">        and predicted values at a specific quantile.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : np.ndarray</span>
+<span class="sd">        The true values.</span>
+<span class="sd">    y_pred : np.ndarray</span>
+<span class="sd">        The predicted values.</span>
+<span class="sd">    quantile : float</span>
+<span class="sd">        The quantile to calculate the loss for.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The quantile loss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="n">quantile</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">quantile</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="n">errors</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span></div>
+
+
+<div class="viewcode-block" id="evaluate_model"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.evaluate_model">[docs]</a><span class="k">def</span> <span class="nf">evaluate_model</span><span class="p">(</span>
+    <span class="n">df_true</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">df_pred</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">quantiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+    <span class="n">horizons</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate model on data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_true : pd.DataFrame</span>
+<span class="sd">        True values.</span>
+<span class="sd">    df_pred : pd.DataFrame</span>
+<span class="sd">        Predicted values.</span>
+<span class="sd">    quantiles : List[float], optional</span>
+<span class="sd">        Quantiles to evaluate on, by default [0.1, 0.5, 0.9].</span>
+<span class="sd">    horizons : List[int], optional</span>
+<span class="sd">        Horizons to evaluate on, by default [7, 14, 21].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Evaluation results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">quantile</span> <span class="ow">in</span> <span class="n">quantiles</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="n">horizons</span><span class="p">:</span>
+            <span class="n">true</span> <span class="o">=</span> <span class="n">df_true</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;next_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">df_pred</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;pred_</span><span class="si">{</span><span class="n">horizon</span><span class="si">}</span><span class="s2">d_q</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">quantile</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">quantile_loss</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">quantile</span><span class="p">)</span>
+
+            <span class="n">losses</span><span class="p">[(</span><span class="n">quantile</span><span class="p">,</span> <span class="n">horizon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">loss</span>
+
+    <span class="c1"># Make dictionary with losses</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;quantile&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">losses</span><span class="o">.</span><span class="n">keys</span><span class="p">()],</span>
+        <span class="s2">&quot;horizon&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">losses</span><span class="o">.</span><span class="n">keys</span><span class="p">()],</span>
+        <span class="s2">&quot;avg_quantile_loss&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">losses</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">losses</span></div>
+
+
+<div class="viewcode-block" id="serialize_model"><a class="viewcode-back" href="../../../src_demand_forecast.models.html#src_demand_forecast.models.train_model.serialize_model">[docs]</a><span class="k">def</span> <span class="nf">serialize_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize model to pickle file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : object</span>
+<span class="sd">        Model to serialize.</span>
+<span class="sd">    output : str</span>
+<span class="sd">        Path to output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Start training model&quot;</span><span class="p">)</span>
+    <span class="c1"># Read data</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Read data&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">output_features_and_targets</span><span class="p">)</span>
+    <span class="c1"># Split data</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Split data&quot;</span><span class="p">)</span>
+    <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">split_train_test</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># Make model</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Make model&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MultiTargetModel</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">model_params</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+    <span class="c1"># Fit model</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fit model&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="c1"># Predict</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Predict&quot;</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+    <span class="c1"># Calculate loss</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculate loss&quot;</span><span class="p">)</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="n">evaluate_model</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finish training model&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Eduard Poliakov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
