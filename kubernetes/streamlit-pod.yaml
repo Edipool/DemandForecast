@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: streamlit-app
+  labels:
+    app: streamlit-app
+spec:
+  containers:
+    - name: streamlit-app
+      image: edipool/demandforecast_streamlit:latest
+      ports:
+        - containerPort: 8501
